@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tweet Financial Sentiment Analyst</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f7f9fc;
+      }
+      .container {
+        text-align: center;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 500px;
+      }
+      h1 {
+        margin-bottom: 20px;
+        font-size: 26px;
+        color: #333;
+      }
+      textarea {
+        width: 100%;
+        height: 120px;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        resize: none;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>BERT Sentiment Classifier</h1>
+      <textarea
+        id="text-input"
+        placeholder="Enter text to classify sentiment..."
+      ></textarea>
+      <br />
+      <button onclick="classifyText()">Classify Sentiment</button>
+      <div id="result" class="result"></div>
+    </div>
+    <script>
+      const sentiments = {
+        LABEL_0: "Bearish",
+        LABEL_1: "Bullish",
+        LABEL_2: "Neutral",
+      };
+
+      async function classifyText() {
+        const text = document.getElementById("text-input").value.trim();
+        const resultDiv = document.getElementById("result");
+        resultDiv.className = "result"; // Reset to default styling
+        resultDiv.innerHTML = "Classifying...";
+
+        if (!text) {
+          resultDiv.className += " error";
+          resultDiv.innerHTML = "Please enter some text.";
+          return;
+        }
+
+        try {
+          const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text }),
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            resultDiv.className += " error";
+            resultDiv.innerHTML = `Error: ${error.error}`;
+            return;
+          }
+
+          const data = await response.json();
+          const predictedClass =
+            sentiments[`LABEL_${data.predicted_class}`] || "Unknown";
+          resultDiv.innerHTML = `Sentiment: <span style="color: #007BFF;">${predictedClass}</span>`;
+        } catch (error) {
+          resultDiv.className += " error";
+          resultDiv.innerHTML = `Error: ${error.message}`;
+        }
+      }
+    </script>
+  </body>
+</html>

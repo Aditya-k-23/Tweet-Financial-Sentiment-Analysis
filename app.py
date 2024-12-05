@@ -1,13 +1,17 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch
 
-# Paths to model and tokenizer
+# Load model and tokenizer
 MODEL_PATH = "./saved_model"
-model = BertForSequenceClassification.from_pretrained(MODEL_PATH)  # No from_safetensors argument needed
+model = BertForSequenceClassification.from_pretrained(MODEL_PATH)
 tokenizer = BertTokenizer.from_pretrained(MODEL_PATH)
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="./templates")
+
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -38,4 +42,4 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=7860)

@@ -6,13 +6,14 @@ WORKDIR /app
 
 # Copy application files
 COPY app.py requirements.txt ./
+COPY templates ./templates
 COPY saved_model ./saved_model
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the application port
-EXPOSE 8080
+EXPOSE 7860
 
 # Run the application
 CMD ["python", "app.py"]
