@@ -1,4 +1,4 @@
-# BERT Sentiment Classifier
+# Tweet Financial Sentiment Analysis
 
 This repository hosts a sentiment classification web application leveraging a fine-tuned BERT model. It predicts sentiment for input text and classifies it into three categories:
 
