@@ -35,8 +35,8 @@ Follow these steps to run the application locally:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/bert-sentiment-classifier.git
-   cd bert-sentiment-classifier
+   git clone https://github.com/Aditya-k-23/Tweet-Financial-Sentiment-Analysis
+   cd Tweet-Financial-Sentiment-Analysis
    ```
 
 2. **Install Dependencies**
@@ -76,13 +76,13 @@ Run the application using Docker:
 1. **Build the Docker Image**
 
    ```bash
-   docker build -t bert-sentiment-classifier .
+   docker build -t Tweet-Financial-Sentiment-Analysis.
    ```
 
 2. **Run the Docker Container**
 
    ```bash
-   docker run -p 8080:8080 bert-sentiment-classifier
+   docker run -p 8080:8080 Tweet-Financial-Sentiment-Analysis
    ```
 
 3. **Access the Application**
